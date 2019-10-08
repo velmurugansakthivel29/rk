@@ -1,0 +1,19 @@
+
+.edit-modal{
+    display: none;    
+    &.show-modal{
+        display:block;
+    }
+}
+.add-modal{
+    display: none;    
+    &.show-modal{
+        display:block;
+    }
+}
+.delete-modal{
+    display: none;
+    &.show-modal{
+        display:block;
+    }
+}
