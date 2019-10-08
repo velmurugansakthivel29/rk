@@ -50,18 +50,10 @@ export class DriverComponent implements OnInit {
     });
   }
   addSubmit(addUserForm) {
-    this.http.post('https://us-central1-nncouriers18.cloudfunctions.net/user', addUserForm.value).pipe(
-      map((result: any) => {
-        const updateStatus = result.status;
-        this.updateMsg = updateStatus.message;
-      }));
+    this.http.post('https://us-central1-nncouriers18.cloudfunctions.net/user', addUserForm.value);
   }
   editSubmit(editUserForm) {
-    this.http.post('https://us-central1-nncouriers18.cloudfunctions.net/user/delete/XB374ELfe3C2F1p803IG', editUserForm.value).pipe(
-      map((result: any) => {
-        const updateStatus = result.status;
-        this.updateMsg = updateStatus.message;
-      }));
+    this.http.post('https://us-central1-nncouriers18.cloudfunctions.net/user/delete/XB374ELfe3C2F1p803IG', editUserForm.value);
   }
   deleteModal(user) {
     this.showDelete = true;
