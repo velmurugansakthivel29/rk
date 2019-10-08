@@ -64,6 +64,7 @@ export class DriverComponent implements OnInit {
       (async(result: any) => {
         const updateStatus = result.status;
         this.updateMsg = updateStatus.message;
+        this.showAdd= false;
       }));
   }
   editSubmit(editUserForm) {
@@ -71,6 +72,7 @@ export class DriverComponent implements OnInit {
       (async(result: any) => {
         const updateStatus = result.status;
         this.updateMsg = updateStatus.message;
+        this.showEdit= false;
       }));
   }
   deleteModal(user) {
@@ -82,6 +84,7 @@ export class DriverComponent implements OnInit {
       (async(result: any) => {
         const deleteStatus = result.status;
         this.deleteMsg = deleteStatus.message;
+        this.showDelete = false;
       }));
   }
 

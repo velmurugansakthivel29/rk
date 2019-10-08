@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient ,HttpHeaders} from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { FormBuilder, Validators, FormArray } from '@angular/forms';
 
@@ -33,6 +33,12 @@ export class CustomerComponent implements OnInit {
     address: ['', Validators.required],
     date: ['', Validators.required],
   });
+  httpOptions = {
+    headers: new HttpHeaders({
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+    })
+};
   constructor(private http: HttpClient, private fb: FormBuilder) { }
 
   ngOnInit() {
@@ -49,20 +55,31 @@ export class CustomerComponent implements OnInit {
     });
   }
   addSubmit(addForm) {
-    this.http.post('https://us-central1-nncouriers18.cloudfunctions.net/customer', addForm.value);
+    this.http.post('https://us-central1-nncouriers18.cloudfunctions.net/customer', addForm.value,this.httpOptions).subscribe(
+      (async(result: any) => {
+        const updateStatus = result.status;
+        this.updateMsg = updateStatus.message;
+        this.showAdd= false;
+      }));
   }
   editSubmit(editForm) {
-    this.http.post('https://us-central1-nncouriers18.cloudfunctions.net/area/updatearea', editForm.value);
+    this.http.post('https://us-central1-nncouriers18.cloudfunctions.net/area/updatearea', editForm.value).subscribe(
+      (async(result: any) => {
+        const updateStatus = result.status;
+        this.updateMsg = updateStatus.message;
+        this.showEdit= false;
+      }));
   }
   deleteModal(user) {
     this.showDelete = true;
     this.delUserId = user.id;
   }
   deleteUser() {
-    this.http.put('https://us-central1-nncouriers18.cloudfunctions.net/user/delete/XB374ELfe3C2F1p803IG', this.delUserId).pipe(
-      map((result: any) => {
+    this.http.put('https://us-central1-nncouriers18.cloudfunctions.net/user/delete/', this.delUserId).subscribe(
+      (async(result: any) => {
         const deleteStatus = result.status;
         this.deleteMsg = deleteStatus.message;
+        this.showDelete = false;
       }));
   }
   completedCustomer() {

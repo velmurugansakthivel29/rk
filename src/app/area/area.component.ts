@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { FormBuilder, Validators, FormArray } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-area',
@@ -23,6 +23,12 @@ export class AreaComponent implements OnInit {
     area: ['', Validators.required],
     id: [''],
   });
+  httpOptions = {
+    headers: new HttpHeaders({
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+    })
+};
   addForm = this.fb.group({
     pin: ['', Validators.required],
     area: ['', Validators.required]
@@ -43,20 +49,31 @@ export class AreaComponent implements OnInit {
     });
   }
   addSubmit(addForm) {
-    this.http.post('https://us-central1-nncouriers18.cloudfunctions.net/area', addForm.value);
+    this.http.post('https://us-central1-nncouriers18.cloudfunctions.net/area', addForm.value,this.httpOptions).subscribe(
+      (async(result: any) => {
+        const updateStatus = result.status;
+        this.updateMsg = updateStatus.message;
+        this.showAdd= false;
+      }));
   }
   editSubmit(editForm) {
-    this.http.post('https://us-central1-nncouriers18.cloudfunctions.net/area/updatearea', editForm.value);
+    this.http.post('https://us-central1-nncouriers18.cloudfunctions.net/area/updatearea', editForm.value).subscribe(
+      (async(result: any) => {
+        const updateStatus = result.status;
+        this.updateMsg = updateStatus.message;
+        this.showEdit= false;
+      }));;
   }
   deleteModal(user) {
     this.showDelete = true;
     this.delUserId = user.id;
   }
   deleteUser() {
-    this.http.put('https://us-central1-nncouriers18.cloudfunctions.net/user/delete/XB374ELfe3C2F1p803IG', this.delUserId).pipe(
-      map((result: any) => {
+    this.http.put('https://us-central1-nncouriers18.cloudfunctions.net/user/delete', this.delUserId).subscribe(
+      (async(result: any) => {
         const deleteStatus = result.status;
         this.deleteMsg = deleteStatus.message;
+        this.showDelete = false;
       }));
   }
 
