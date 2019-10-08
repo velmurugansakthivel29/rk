@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { FormBuilder, Validators, FormArray } from '@angular/forms';
+import { async } from 'q';
 
 @Component({
   selector: 'app-driver',
@@ -32,6 +33,14 @@ export class DriverComponent implements OnInit {
     address: ['', Validators.required],
     password: ['', Validators.required],
   });
+
+  httpOptions = {
+    headers: new HttpHeaders({
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+    })
+};
+
   constructor(private http: HttpClient, private fb: FormBuilder) { }
 
   ngOnInit() {
@@ -50,15 +59,16 @@ export class DriverComponent implements OnInit {
     });
   }
   addSubmit(addUserForm) {
-    this.http.post('https://us-central1-nncouriers18.cloudfunctions.net/user', addUserForm.value).pipe(
-      map((result: any) => {
+    console.log(addUserForm.value);
+    this.http.post('https://us-central1-nncouriers18.cloudfunctions.net/user', addUserForm.value, this.httpOptions).subscribe(
+      (async(result: any) => {
         const updateStatus = result.status;
         this.updateMsg = updateStatus.message;
       }));
   }
   editSubmit(editUserForm) {
-    this.http.post('https://us-central1-nncouriers18.cloudfunctions.net/user/delete/XB374ELfe3C2F1p803IG', editUserForm.value).pipe(
-      map((result: any) => {
+    this.http.post('https://us-central1-nncouriers18.cloudfunctions.net/user/updateuserdata/', editUserForm.value).subscribe(
+      (async(result: any) => {
         const updateStatus = result.status;
         this.updateMsg = updateStatus.message;
       }));
@@ -68,8 +78,8 @@ export class DriverComponent implements OnInit {
     this.delUserId = user.id;
   }
   deleteUser() {
-    this.http.put('https://us-central1-nncouriers18.cloudfunctions.net/user/delete/XB374ELfe3C2F1p803IG', this.delUserId).pipe(
-      map((result: any) => {
+    this.http.get('https://us-central1-nncouriers18.cloudfunctions.net/user/delete/'+this.delUserId).subscribe(
+      (async(result: any) => {
         const deleteStatus = result.status;
         this.deleteMsg = deleteStatus.message;
       }));
