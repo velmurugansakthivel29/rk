@@ -11,20 +11,18 @@ import { FormBuilder, Validators, FormArray } from '@angular/forms';
 export class CustomerComponent implements OnInit {
 
   public actionDetails: any;
+  public driverDetails: any;
   public editUserInfo: any;
   public showEdit: boolean = false;
   public showDelete: boolean = false;
   public showAdd: boolean = false;
+  public showAssign: boolean = false;
   public deleteMsg: string = 'Are you sure want to delete?';
   public updateMsg: string;
   public delUserId: string = '';
-  editForm = this.fb.group({
-    name: ['', Validators.required],
-    mobile: ['', Validators.required],
-    area: ['', Validators.required],
-    address: ['', Validators.required],
-    date: ['', Validators.required],
-    id: [''],
+  assignForm = this.fb.group({
+    driverId: ['', Validators.required],
+    customerId: [''],
   });
   addForm = this.fb.group({
     name: ['', Validators.required],
@@ -46,16 +44,20 @@ export class CustomerComponent implements OnInit {
       data => this.actionDetails = data
     );
   }
-  editModal(area) {
-    this.showEdit = true;
-    this.editForm.patchValue({
-      pin: area.pin,
-      area: area.area,
-      id: area.id
+  assignSubmit(assignForm){
+
+    this.assignForm.patchValue({
+      id: '3v1tJelsfqEWvEer0YlR'
     });
+    this.http.post('https://us-central1-nncouriers18.cloudfunctions.net/customer/assigntrip', assignForm.value,this.httpOptions).subscribe(
+      (async(result: any) => {
+        const updateStatus = result.status;
+        this.updateMsg = updateStatus.message;
+        this.showAssign= false;
+      }));
   }
   addSubmit(addForm) {
-    this.http.post('https://us-central1-nncouriers18.cloudfunctions.net/customer', addForm.value,this.httpOptions).subscribe(
+    this.http.post('https://us-central1-nncouriers18.cloudfunctions.net/customer/assigntrip', addForm.value,this.httpOptions).subscribe(
       (async(result: any) => {
         const updateStatus = result.status;
         this.updateMsg = updateStatus.message;
@@ -90,13 +92,17 @@ export class CustomerComponent implements OnInit {
       }));
   }
   getAllAction() {
-    return this.http.get('https://us-central1-nncouriers18.cloudfunctions.net/customer/orderlist')
+    return this.http.get('https://us-central1-nncouriers18.cloudfunctions.net/customer/pendinglist')
       .pipe(
       map((result: any) => {
         const action = result.orderList;
         return action;
       }));
-
-
+  }
+  getAllUser(customer) {
+    this.showAssign=true;
+    return this.http.get('https://us-central1-nncouriers18.cloudfunctions.net/user/allusers')
+      .subscribe( result=> this.driverDetails = result.userDetails);
+   
   }
 }

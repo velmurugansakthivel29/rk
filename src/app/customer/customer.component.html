@@ -13,10 +13,6 @@
                     </h2>
                 </div>
                 <div class="col-sm-4">
-                    <a class="btn btn-success" (click)="completedCustomer()">
-                        <i class="material-icons">&#xE147;</i>
-                        <span>Completed Order</span>
-                    </a>
                     <a class="btn btn-success" (click)="showAdd=true">
                         <i class="material-icons">&#xE147;</i>
                         <span>Add New Customer</span>
@@ -43,46 +39,16 @@
                     <td> {{ action.address }}</td>
                     <td> {{ action.tripStatus }}</td>
                     <td>
-                        <a (click)="editModal(action)" class="pointer">
-                            <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
-                        </a>
-                        <a (click)="deleteModal(action)" class="pointer">
-                            <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
+                        <a class="btn btn-success" (click)="getAllUser(action)">
+                            <span>Assign</span>
                         </a>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <!-- <div class="clearfix">
-            <div class="hint-text">Showing
-                <b>5</b> out of
-                <b>25</b> entries</div>
-            <ul class="pagination">
-                <li class="page-item disabled">
-                    <a href="#">Previous</a>
-                </li>
-                <li class="page-item active">
-                    <a href="#" class="page-link">1</a>
-                </li>
-                <li class="page-item">
-                    <a href="#" class="page-link">2</a>
-                </li>
-                <li class="page-item">
-                    <a href="#" class="page-link">3</a>
-                </li>
-                <li class="page-item">
-                    <a href="#" class="page-link">4</a>
-                </li>
-                <li class="page-item">
-                    <a href="#" class="page-link">5</a>
-                </li>
-                <li class="page-item">
-                    <a href="#" class="page-link">Next</a>
-                </li>
-            </ul>
-        </div> -->
     </div>
 </div>
+
 
 <!-- Add Modal HTML -->
 
@@ -115,34 +81,22 @@
         <button type="submit" class="btn btn-success pull-right" [disabled]="!addForm.valid">Add Customer</button>
     </form>
 </div>
-<!-- Edit Modal HTML -->
+<!-- Assign Modal HTML -->
 
-<!-- <div class="edit-modal custom-modal" [ngClass]="{'show-modal' : showEdit}">
+<div class="assign-modal custom-modal" [ngClass]="{'show-modal' : showAssign}">
     <div>
-        <h3>Edit Area</h3>
+        <h3>Assign</h3>
     </div>
-    <form [formGroup]="editForm" (ngSubmit)="editSubmit(editForm)">
+    <form [formGroup]="assignForm" (ngSubmit)="assignSubmit(assignForm)">
         <div class="form-group">
-            <label>Pin</label>
-            <input type="text" formControlName="pin" class="form-control" required>
+            <select formControlName="driverId" class="form-control">
+                <option [ngValue]="null" disabled>Select Driver</option>
+                <option *ngFor="let driver of driverDetails" [ngValue]="driver.id">
+                    {{ driver.name }}
+                </option>
+            </select>
         </div>
-        <div class="form-group">
-            <label>Area</label>
-            <input type="text" formControlName="area" class="form-control" required>
-        </div>
-        <button type="cancel" class="btn" (click)="showEdit=false">Cancel</button>
-        <button type="submit" class="btn btn-success pull-right" [disabled]="!editForm.valid">Submit</button>
+        <button type="cancel" class="btn" (click)="showAssign=false">Cancel</button>
+        <button type="submit" class="btn btn-success pull-right" [disabled]="!assignForm.valid">Assign</button>
     </form>
-</div> -->
-
-<!-- Delete Modal HTML -->
-
-<div class="delete-modal custom-modal" [ngClass]="{'show-modal' : showDelete}">
-    <h4>
-        {{ deleteMsg }}
-    </h4>
-    <div class="mrg-t40">
-        <button type="cancel" class="btn" (click)="showDelete=false">Cancel</button>
-        <button type="submit" (click)="deleteUser()" class="btn btn-success pull-right">Delete</button>
-    </div>
 </div>
