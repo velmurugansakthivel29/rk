@@ -9,6 +9,8 @@ import { AreaComponent } from './area/area.component';
 import { CustomerComponent } from './customer/customer.component';
 import { ReportComponent } from './report/report.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ApiService } from 'src/provider/api.service';
+import { LandingComponent } from './landing/landing.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     DriverComponent,
     AreaComponent,
     CustomerComponent,
-    ReportComponent
+    ReportComponent,
+    LandingComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +27,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    ApiService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -4,6 +4,7 @@ import { DriverComponent } from './driver/driver.component';
 import { AreaComponent } from './area/area.component';
 import { CustomerComponent } from './customer/customer.component';
 import { ReportComponent } from './report/report.component';
+import { LandingComponent } from './landing/landing.component';
 
 const routes: Routes = [
   
@@ -17,7 +18,10 @@ const routes: Routes = [
     path:'report', component:ReportComponent
   },
   {
-    path:'', component:DriverComponent
+    path:'driver', component:DriverComponent
+  },
+  {
+    path:'', component:LandingComponent
   },
 ];
 
